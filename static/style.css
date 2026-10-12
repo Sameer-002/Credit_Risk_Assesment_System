@@ -1,0 +1,85 @@
+:root{
+  --ground:#E8EFF3; --surface:#fff; --ink:#0F2A3D; --muted:#5B7284; --line:#D3DEE5;
+  --low:#0E9F8E; --mid:#F0A202; --high:#E5484D; --accent:#1D5C8A;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:400 16px/1.5 "DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--ground);min-height:100vh;padding:clamp(16px,4vw,48px);position:relative;overflow-x:hidden}
+.bg-orbs i{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;z-index:-1;animation:drift 18s ease-in-out infinite alternate}
+.bg-orbs i:first-child{width:420px;height:420px;background:#9CD3E6;top:-120px;left:-100px}
+.bg-orbs i:last-child{width:380px;height:380px;background:#B9E6D9;bottom:-120px;right:-80px;animation-delay:-9s}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.15)}}
+
+.top{max-width:1080px;margin:0 auto 28px}
+.top h1{font:800 clamp(2rem,5vw,3.2rem)/1.05 "Bricolage Grotesque",sans-serif;letter-spacing:-.03em;display:flex;align-items:center;gap:14px}
+.top p{color:var(--muted);margin-top:10px;max-width:52ch}
+.mark{width:.8em;height:.8em;border-radius:50% 50% 50% 8px;background:conic-gradient(var(--low),var(--mid),var(--high),var(--low));animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.layout{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start}
+.panel{background:var(--surface);border-radius:var(--r);padding:28px;box-shadow:0 1px 0 var(--line),0 24px 48px -28px rgba(15,42,61,.35)}
+
+.form{display:grid;gap:26px;animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+fieldset{border:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+legend{font:700 1.15rem "Bricolage Grotesque",sans-serif;padding:0 0 12px;width:100%;border-bottom:2px solid var(--ink);margin-bottom:14px;float:left}
+legend+*{clear:both}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:500;color:var(--muted)}
+input,select{font:inherit;color:var(--ink);background:#F5F9FB;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;transition:border-color .2s,box-shadow .2s,background .2s}
+input:hover,select:hover{border-color:#9DB4C3}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(29,92,138,.18);background:#fff}
+input.bad{border-color:var(--high);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.calc{display:grid;gap:2px;align-content:center;background:#EEF5F9;border-radius:10px;padding:10px 14px;border:1.5px dashed var(--line)}
+.calc span{font-size:.85rem;color:var(--muted)}
+.calc strong{font:800 1.6rem "Bricolage Grotesque",sans-serif}
+.calc small{font-size:.75rem;color:var(--muted)}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#F5F9FB;border:1.5px solid var(--line);border-radius:10px;padding:3px}
+.seg input{position:absolute;opacity:0;width:0}
+.seg label{text-align:center;padding:8px;border-radius:7px;cursor:pointer;transition:background .25s,color .25s;color:var(--ink)}
+.seg input:checked+label{background:var(--ink);color:#fff}
+.seg input:focus-visible+label{box-shadow:0 0 0 3px rgba(29,92,138,.35)}
+
+button{position:relative;font:700 1.05rem "Bricolage Grotesque",sans-serif;color:#fff;background:var(--ink);border:0;border-radius:12px;padding:16px;cursor:pointer;overflow:hidden;transition:transform .15s,background .2s}
+button::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.25),transparent 70%);transform:translateX(-100%)}
+button:hover::after{transform:translateX(100%);transition:transform .7s}
+button:hover{background:#17405c}
+button:active{transform:scale(.98)}
+button .spin{display:none;width:20px;height:20px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;margin:auto;animation:spin .7s linear infinite}
+button.loading .t{display:none}
+button.loading .spin{display:block}
+button:disabled{cursor:wait}
+.err{color:var(--high);font-weight:500;font-size:.92rem}
+
+/* Result */
+.result{position:sticky;top:24px;text-align:center;animation:rise .7s .15s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .5s}
+.result[data-state="low"]{box-shadow:0 0 0 2px var(--low),0 24px 48px -24px rgba(14,159,142,.5)}
+.result[data-state="high"]{box-shadow:0 0 0 2px var(--high),0 24px 48px -24px rgba(229,72,77,.5)}
+.dial{width:100%;max-width:340px}
+.track,.fill{fill:none;stroke-width:16;stroke-linecap:round}
+.track{stroke:#E4ECF1}
+.fill{stroke:url(#g);stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1)}
+.needle{transform-origin:110px 110px;transform:rotate(-90deg);transition:transform 1.6s cubic-bezier(.34,1.4,.5,1)}
+.needle line{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.needle circle{fill:var(--ink)}
+.thr{transform-origin:110px 110px;transition:transform 1s,opacity .6s}
+.thr line{stroke:var(--ink);stroke-width:2.5;stroke-dasharray:3 2}
+.end{font-size:8px;fill:var(--muted)}
+.big{font:800 clamp(3.4rem,8vw,4.6rem)/1 "Bricolage Grotesque",sans-serif;letter-spacing:-.04em;margin-top:-6px}
+.big sup{font-size:.4em;color:var(--muted);margin-left:2px}
+.label{color:var(--muted);font-size:.9rem;margin-top:4px}
+.verdict{display:inline-block;margin-top:18px;padding:10px 22px;border-radius:999px;font:700 1.15rem "Bricolage Grotesque",sans-serif;background:#EEF5F9;color:var(--muted);transition:background .4s,color .4s}
+.result[data-state="low"] .verdict{background:var(--low);color:#fff;animation:pop .5s cubic-bezier(.34,1.8,.5,1)}
+.result[data-state="high"] .verdict{background:var(--high);color:#fff;animation:pop .5s cubic-bezier(.34,1.8,.5,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.note{margin-top:14px;font-size:.85rem;color:var(--muted);min-height:1.3em}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .result{position:static;order:-1}
+}
+@media (max-width:520px){fieldset{grid-template-columns:1fr}.panel{padding:20px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
